@@ -1,24 +1,34 @@
 import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Dashboard from './Dashboard'
+
+import Dashboard from './Dashboard';
+import Store from './Store';
 
 
 
-
-class App extends Component {
-
-    render(){
+function App(){
 
 
-        return (
-         <Dashboard/>  
-        );
+    return (
+        <div className="App">
 
+            <Store>
 
+                <Dashboard/>  
+            
+            </Store>
 
-    }
+        </div>
+       );
+
 
 }
+
+
+
+
+
+
 
 
 

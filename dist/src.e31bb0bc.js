@@ -54298,7 +54298,85 @@ Object.defineProperty(exports, "default", {
 var _TextField = _interopRequireDefault(require("./TextField"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./TextField":"../node_modules/@material-ui/core/esm/TextField/TextField.js"}],"components/Dashboard.js":[function(require,module,exports) {
+},{"./TextField":"../node_modules/@material-ui/core/esm/TextField/TextField.js"}],"components/Store.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = Store;
+exports.CTX = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var CTX = _react.default.createContext();
+
+exports.CTX = CTX;
+var initState = {
+  general: [{
+    from: 'aaron',
+    msg: 'hello'
+  }, {
+    from: 'aaron',
+    msg: 'yo'
+  }, {
+    from: 'aaron',
+    msg: 'hi'
+  }],
+  football: [{
+    from: 'moss',
+    msg: 'what was wenger doing putting walcott on that early'
+  }, {
+    from: 'moss',
+    msg: 'did you see that ludicrious display last night'
+  }, {
+    from: 'arsenal',
+    msg: '..'
+  }]
+};
+
+function reducer(state, action) {
+  var _action$payload = action.payload,
+      from = _action$payload.from,
+      msg = _action$payload.msg,
+      topic = _action$payload.topic;
+
+  switch (action.type) {
+    case 'RECIEVE_MESSAGE':
+      return _objectSpread({}, state, _defineProperty({}, action.payload.topic, [].concat(_toConsumableArray(state[action.payload.topic]), [{
+        from: from,
+        msg: msg
+      }])));
+
+    default:
+      return state;
+  }
+}
+
+function Store(props) {
+  var reducerHook = _react.default.useReducer(reducer, initState);
+
+  return _react.default.createElement(CTX.Provider, {
+    value: reducerHook
+  }, props.children);
+}
+},{"react":"../node_modules/react/index.js"}],"components/Dashboard.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -54327,6 +54405,8 @@ var _Chip = _interopRequireDefault(require("@material-ui/core/Chip"));
 var _Button = _interopRequireDefault(require("@material-ui/core/Button"));
 
 var _TextField = _interopRequireDefault(require("@material-ui/core/TextField"));
+
+var _Store = require("./Store");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54371,7 +54451,15 @@ var useStyles = (0, _styles.makeStyles)(function (theme) {
 });
 
 function Dashboard() {
-  var classes = useStyles();
+  var classes = useStyles(); //CTX Store
+
+  var _React$useContext = _react.default.useContext(_Store.CTX),
+      _React$useContext2 = _slicedToArray(_React$useContext, 1),
+      allChats = _React$useContext2[0];
+
+  console.log({
+    allChats: allChats
+  });
 
   var _React$useState = _react.default.useState(''),
       _React$useState2 = _slicedToArray(_React$useState, 2),
@@ -54427,7 +54515,7 @@ function Dashboard() {
     color: "primary"
   }, "Send"))));
 }
-},{"react":"../node_modules/react/index.js","@material-ui/core/Paper":"../node_modules/@material-ui/core/esm/Paper/index.js","@material-ui/core/Typography":"../node_modules/@material-ui/core/esm/Typography/index.js","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/List":"../node_modules/@material-ui/core/esm/List/index.js","@material-ui/core/ListItem":"../node_modules/@material-ui/core/esm/ListItem/index.js","@material-ui/core/ListItemIcon":"../node_modules/@material-ui/core/esm/ListItemIcon/index.js","@material-ui/core/ListItemText":"../node_modules/@material-ui/core/esm/ListItemText/index.js","@material-ui/core/Chip":"../node_modules/@material-ui/core/esm/Chip/index.js","@material-ui/core/Button":"../node_modules/@material-ui/core/esm/Button/index.js","@material-ui/core/TextField":"../node_modules/@material-ui/core/esm/TextField/index.js"}],"components/App.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","@material-ui/core/Paper":"../node_modules/@material-ui/core/esm/Paper/index.js","@material-ui/core/Typography":"../node_modules/@material-ui/core/esm/Typography/index.js","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/List":"../node_modules/@material-ui/core/esm/List/index.js","@material-ui/core/ListItem":"../node_modules/@material-ui/core/esm/ListItem/index.js","@material-ui/core/ListItemIcon":"../node_modules/@material-ui/core/esm/ListItemIcon/index.js","@material-ui/core/ListItemText":"../node_modules/@material-ui/core/esm/ListItemText/index.js","@material-ui/core/Chip":"../node_modules/@material-ui/core/esm/Chip/index.js","@material-ui/core/Button":"../node_modules/@material-ui/core/esm/Button/index.js","@material-ui/core/TextField":"../node_modules/@material-ui/core/esm/TextField/index.js","./Store":"components/Store.js"}],"components/App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -54441,54 +54529,23 @@ require("bootstrap/dist/css/bootstrap.min.css");
 
 var _Dashboard = _interopRequireDefault(require("./Dashboard"));
 
+var _Store = _interopRequireDefault(require("./Store"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-var App =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(App, _Component);
-
-  function App() {
-    _classCallCheck(this, App);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(App).apply(this, arguments));
-  }
-
-  _createClass(App, [{
-    key: "render",
-    value: function render() {
-      return _react.default.createElement(_Dashboard.default, null);
-    }
-  }]);
-
-  return App;
-}(_react.Component);
+function App() {
+  return _react.default.createElement("div", {
+    className: "App"
+  }, _react.default.createElement(_Store.default, null, _react.default.createElement(_Dashboard.default, null)));
+}
 
 var _default = App;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","bootstrap/dist/css/bootstrap.min.css":"../node_modules/bootstrap/dist/css/bootstrap.min.css","./Dashboard":"components/Dashboard.js"}],"index.css":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","bootstrap/dist/css/bootstrap.min.css":"../node_modules/bootstrap/dist/css/bootstrap.min.css","./Dashboard":"components/Dashboard.js","./Store":"components/Store.js"}],"index.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -54552,7 +54609,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56957" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51847" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
